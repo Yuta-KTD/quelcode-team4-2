@@ -16,9 +16,9 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
-artifacts:
-  files:
-    - "Dockerrun.aws.json"
-    - ".ebextensions/**/*"
-    - ".platform/**/*"
-  base-directory: "target/quelcode-team4-2"
+  artifact:
+    files:
+      - "Dockerrun.aws.json"
+      - ".ebextensions/**/*"
+      - ".platform/**/*"
+    name: codebuild-ap-northeast1--887028440782-quelcinemas-bucket
