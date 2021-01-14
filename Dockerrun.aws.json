@@ -2,7 +2,7 @@
   "AWSEBDockerrunVersion": "1",
   "Logging": "/var/log/nginx",
   "Image": {
-    "Name": "887028440782.dkr.ecr.us-east-2.amazonaws.com/quelcinemas_ecr_repos:latest",
+    "Name": "887028440782.dkr.ecr.ap-northeast-1.amazonaws.com/quelcinemas_ecr_repos:latest",
     "Update": "true"
   }
 }
