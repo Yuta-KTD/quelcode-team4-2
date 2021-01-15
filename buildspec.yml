@@ -20,9 +20,9 @@ artifacts:
   files:
     - "**/*"
   secondary-artifacts:
-    artifact2:
+    awsJSON:
       files:
         - Dockerrun.aws.json
         - .ebextensions/**/*
         - .platform/**/*
-      name: awsJSON
+      name: quelcinemas.zip
