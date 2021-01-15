@@ -20,7 +20,7 @@ artifacts:
   files:
     - "**/*"
   secondary-artifacts:
-    artifact1:
+    artifact2:
       files:
         - Dockerrun.aws.json
         - .ebextensions/**/*
