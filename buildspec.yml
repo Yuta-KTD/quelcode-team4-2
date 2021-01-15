@@ -21,3 +21,4 @@ artifacts:
     - Dockerrun.aws.json
     - .ebextensions/**/*
     - .platform/**/*
+  name: quelcinemas-from-codebuild-to-eb
