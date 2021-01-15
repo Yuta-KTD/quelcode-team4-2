@@ -17,9 +17,10 @@ phases:
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
 artifacts:
+  files:
   secondary-artifacts:
-    artifact2:
-      files:
-        - Dockerrun.aws.json
-        - .ebextensions/**/*
-        - .platform/**/*
+    artifact1:
+    files:
+      - Dockerrun.aws.json
+      - .ebextensions/**/*
+      - .platform/**/*
