@@ -25,4 +25,3 @@ artifacts:
         - Dockerrun.aws.json
         - .ebextensions/**/*
         - .platform/**/*
-      name: quelcinemas.zip
