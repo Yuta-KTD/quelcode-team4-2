@@ -17,8 +17,10 @@ phases:
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
 artifacts:
-  files:
-    - Dockerrun.aws.json
-    - .ebextensions/**/*
-    - .platform/**/*
-  name: quelcinemas-from-codebuild-to-eb
+  secondary-artifacts:
+    artifact1:
+    artifact2:
+      files:
+        - Dockerrun.aws.json
+        - .ebextensions/**/*
+        - .platform/**/*
