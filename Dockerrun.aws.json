@@ -1,8 +1,14 @@
 {
   "AWSEBDockerrunVersion": "1",
-  "Logging": "/var/log/nginx",
   "Image": {
     "Name": "887028440782.dkr.ecr.ap-northeast-1.amazonaws.com/quelcinemas_ecr_repos:latest",
     "Update": "true"
-  }
+  },
+  "Ports": [
+    {
+      "ContainerPort": 80
+    }
+  ],
+  "Logging": "/var/log/nginx",
+  "Entrypoint": "var/www/html/mycakeapp"
 }
