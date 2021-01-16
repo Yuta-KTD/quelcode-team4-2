@@ -6,7 +6,7 @@ EXPOSE 80
 ENV CURRENT_ENVIRONMENT=production
 ENV CAKEPHP_DEBUG=0
 
-# 鍵の環境変数（AWS上での操作による設定に切り替える可能性）
+# 鍵の環境変数
 ENV DEV_KEY=HOGEhogeHOGEhogeHOGEhogeHOGEhoge
 
 # MySQL用の環境変数
@@ -38,7 +38,6 @@ WORKDIR /var/www/html/mycakeapp
 # アプリケーションファイルを追加
 ADD html/ /var/www/html
 # 設定ファイルを追加
-ADD docker/nginx/default.conf /var/www/docker/nginx/default.conf
 ADD docker/php/php.ini /var/www/docker/php/php.ini
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/mycakeapp/webroot
