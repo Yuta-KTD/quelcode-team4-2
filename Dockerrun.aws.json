@@ -10,5 +10,4 @@
     }
   ],
   "Logging": "/var/log/nginx",
-  "Entrypoint": "var/www/html/mycakeapp"
 }
