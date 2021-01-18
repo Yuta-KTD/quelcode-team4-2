@@ -46,3 +46,4 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 # composerのインストールを行う
 RUN composer install
+RUN composer require aws/aws-sdk-php
