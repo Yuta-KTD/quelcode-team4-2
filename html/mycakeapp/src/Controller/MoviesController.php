@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-
+use App\Model\Utility\S3Manager;
 
 /**
  * Movies Controller
@@ -55,6 +55,8 @@ class MoviesController extends MovieAuthBaseController
         // →その後にそのIDを使用して"id.拡張子"の形式で画像を保存
         // →保存したエンティティに上書き
         if ($this->request->is('post')) {
+            // S3のインスタンスを作成
+            $s3 = new S3Manager();
             //thumbnail_pathは配列なので先に取り出す。
             $thumbnail_data_array = $this->request->getData('thumbnail_path');
             $thumbnail_filename = $thumbnail_data_array['name'];
@@ -85,6 +87,7 @@ class MoviesController extends MovieAuthBaseController
                 if ($this->Movies->save($movie_update)) {
                     //画像をファイルに保存
                     move_uploaded_file($thumbnail_data_array['tmp_name'], $thumbnail_file_path_for_save);
+                    $s3->putObject($baseDir, 'hoge.jpg', 'hoge.jpg');
                     // 成功時のメッセージ
                     $this->Flash->success(__('保存しました。'));
                     // トップページ（index）に移動
