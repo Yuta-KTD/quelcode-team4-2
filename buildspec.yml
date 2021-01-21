@@ -23,4 +23,5 @@ artifacts:
     awsJSON:
       files:
         - Dockerrun.aws.json
-        - .ebextensions/**/*
+        # - .ebextensions/**/*
+        # - .platform/**/*
