@@ -10,5 +10,5 @@
     }
   ],
   "Logging": "/var/log/nginx",
-  "Command": "RUN a2enmod rewrite"
+  "Command": "a2enmod rewrite"
 }
