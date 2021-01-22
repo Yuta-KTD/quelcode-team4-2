@@ -31,7 +31,6 @@ RUN apt-get update \
   && apt-get install -y libicu-dev \
   && docker-php-ext-install pdo_mysql intl mbstring
 
-RUN a2enmod rewrite
 # 作業ディレクトリを変更する
 WORKDIR /var/www/html/mycakeapp
 
@@ -44,6 +43,6 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/mycakeapp/webroot
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# composerのインストールを行う
+# composerパッケージ類のインストール
 RUN composer install
 RUN composer require aws/aws-sdk-php
