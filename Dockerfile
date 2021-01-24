@@ -16,6 +16,7 @@ ENV MYSQL_USER=docker_db_user
 ENV MYSQL_PASSWORD=docker_db_user_pass
 ENV TZ=Asia/Tokyo
 
+RUN a2enmod rewrite
 # composerをインストールする
 RUN curl -sS https://getcomposer.org/installer | php -- --version=1.10.15 && mv composer.phar /usr/local/bin/composer
 
