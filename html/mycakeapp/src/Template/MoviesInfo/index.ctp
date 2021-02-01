@@ -39,6 +39,6 @@
             <?= $this->Html->image('top/banner/sale1.jpg') ?>
             <?= $this->Html->image('top/banner/sale2.jpg') ?>
         </div>
-        <?= $this->Html->link('料金表', ['controller' => 'prices', 'action' => 'index'], ['class' => 'discount-link']); ?>
+        <?= $this->Html->link('料金表', ['action' => 'pricelist'], ['class' => 'discount-link']); ?>
     </div>
 </section>
