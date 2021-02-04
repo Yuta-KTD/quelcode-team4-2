@@ -9,7 +9,7 @@
 - Javascript / jQuery / Ajax
 - PHP7.3
 - CakePHP3.8
-- AWS(EC2,VPC,RDS,ElasticBeanstalk,Route53,AamazonCertificateManager,CodePipeline)
+- AWS(EC2,VPC,RDS,S3,ELB,ECR,ElasticBeanstalk,Route53,AamazonCertificateManager,CodePipeline)
 - Docker
 - Docker-compose(ローカル開発環境用)
 - Nginx
