@@ -1,10 +1,18 @@
 version: 0.2
 
+env:
+  secrets-manager:
+    DOCKERHUB_USER: arn:aws:secretsmanager:ap-northeast-1:887028440782:secret:dockerhub-Dpyk3Q:username
+    DOCKERHUB_PASS: arn:aws:secretsmanager:ap-northeast-1:887028440782:secret:dockerhub-Dpyk3Q:password
+
 phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      # Docker Hub へのログイン
+      - echo Logging in to Docker Hub...
+      - echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
   build:
     commands:
       - echo Build started on `date`
@@ -15,13 +23,11 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
+      - DOCKER_URL=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker push $DOCKER_URL
+      - printf '{"AWSEBDockerrunVersion":"1","Image":{"Name":"%s","Update":"true"},"Ports":[{"ContainerPort":"%s"}]}' $DOCKER_URL $PORT > Dockerrun.aws.json
 artifacts:
   files:
-    - "**/*"
-  secondary-artifacts:
-    awsJSON:
-      files:
-        - Dockerrun.aws.json
-        - .ebextensions/**/*
-        - .platform/**/*
+    - Dockerrun.aws.json
+    # - .ebextensions/**/*
+    # - .platform/**/*
