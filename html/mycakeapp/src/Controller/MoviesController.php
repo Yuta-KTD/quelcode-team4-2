@@ -14,6 +14,17 @@ use App\Controller\AppController;
  */
 class MoviesController extends MovieAuthBaseController
 {
+    protected $storage_path;
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('S3Client');
+        $this->autoRender = false;
+
+        $this->storage_path = STORAGE_PATH;
+    }
+
     /**
      * Index method
      *
@@ -21,8 +32,7 @@ class MoviesController extends MovieAuthBaseController
      */
     public function index()
     {
-        $movies = $this->paginate($this->Movies);
-
+        $movies = $this->paginate($this->S3Client->getList(null));
         $this->set(compact('movies'));
     }
 
@@ -75,16 +85,20 @@ class MoviesController extends MovieAuthBaseController
                 //保存先thumbnail_path_idのID
                 $thumbnail_path_id = $movie->id;
                 //webroot/img/Auctionからの絶対パスを取得 参考：https://blog.s-giken.net/323.html
-                $webroot_img_path = realpath(WWW_ROOT . "img/MovieThumbnails");
-                $thumbnail_file_path_for_save = $webroot_img_path . "/" . $thumbnail_path_id . "." . $thumbnail_file_extension;
+                $file_name = $thumbnail_path_id . "." . $thumbnail_file_extension;
+                $store_dir = "img/MovieThumbnails/";
                 $thumbnail_file_path = "MovieThumbnails/" . $thumbnail_path_id . "." . $thumbnail_file_extension;
                 //これをすでに一度保存したimage_pathに上書き
                 $movie_update = $this->Movies->patchEntity($movie, [
                     'thumbnail_path' => $thumbnail_file_path,
                 ]);
                 if ($this->Movies->save($movie_update)) {
-                    //画像をファイルに保存
-                    move_uploaded_file($thumbnail_data_array['tmp_name'], $thumbnail_file_path_for_save);
+
+                    $file_local_path = sprintf('%s/%s', $this->storage_path, $file_name);
+                    $file_store_path = sprintf('%s%s', $store_dir, $file_name);
+                    //画像をS3に保存
+                    $result = $this->S3Client->putFile($file_local_path, $file_store_path);
+
                     // 成功時のメッセージ
                     $this->Flash->success(__('保存しました。'));
                     // トップページ（index）に移動
@@ -125,14 +139,21 @@ class MoviesController extends MovieAuthBaseController
             if ($this->Movies->save($movie)) {
                 $thumbnail_file_extension = pathinfo($thumbnail_filename, PATHINFO_EXTENSION);
                 $thumbnail_path_id = $movie->id;
-                $webroot_img_path = realpath(WWW_ROOT . "img/MovieThumbnails");
-                $thumbnail_file_path_for_save = $webroot_img_path . "/" . $thumbnail_path_id . "." . $thumbnail_file_extension;
+                $file_name = $thumbnail_path_id . "." . $thumbnail_file_extension;
+                $store_dir = "img/MovieThumbnails/";
                 $thumbnail_file_path = "MovieThumbnails/" . $thumbnail_path_id . "." . $thumbnail_file_extension;
+                //これをすでに一度保存したimage_pathに上書き
                 $movie_update = $this->Movies->patchEntity($movie, [
                     'thumbnail_path' => $thumbnail_file_path,
                 ]);
                 if ($this->Movies->save($movie_update)) {
-                    move_uploaded_file($thumbnail_data_array['tmp_name'], $thumbnail_file_path_for_save);
+
+                    $file_local_path = sprintf('%s/%s', $this->storage_path, $file_name);
+                    $file_store_path = sprintf('%s%s', $store_dir, $file_name);
+                    //画像をS3に保存
+                    $result = $this->S3Client->putFile($file_local_path, $file_store_path);
+
+                    // 成功時のメッセージ
                     $this->Flash->success(__('保存しました。'));
                     return $this->redirect(['action' => 'index']);
                 }
@@ -153,7 +174,8 @@ class MoviesController extends MovieAuthBaseController
     {
         $this->request->allowMethod(['post', 'delete']);
         $movie = $this->Movies->get($id);
-        if ($this->Movies->delete($movie)) {
+        $$s3_file_path = $movie->thumbnail_path;
+        if ($this->Movies->delete($movie) && $this->S3Client->deleteFile($s3_file_path)) {
             $this->Flash->success(__('The movie has been deleted.'));
         } else {
             $this->Flash->error(__('The movie could not be deleted. Please, try again.'));
