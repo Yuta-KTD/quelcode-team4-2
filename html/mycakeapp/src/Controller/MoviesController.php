@@ -34,7 +34,8 @@ class MoviesController extends MovieAuthBaseController
      */
     public function index()
     {
-        $movies = $this->paginate($this->S3Client->getList(null));
+        $getThumbnail = $this->S3Client->getList(null);
+        $movies = $this->paginate($getThumbnail);
         $this->set(compact('movies'));
     }
 
