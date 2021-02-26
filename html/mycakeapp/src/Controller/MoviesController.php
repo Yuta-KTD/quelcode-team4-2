@@ -20,7 +20,9 @@ class MoviesController extends MovieAuthBaseController
     {
         parent::initialize();
         $this->loadComponent('S3Client');
-        $this->autoRender = false;
+
+        // レイアウトをmainに変更
+        $this->viewBuilder()->setLayout('main');
 
         $this->storage_path = STORAGE_PATH;
     }
