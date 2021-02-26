@@ -5,6 +5,7 @@
  * @var \App\Model\Entity\Movie[]|\Cake\Collection\CollectionInterface $movies
  */
 ?>
+<?= $e->getMessage() ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
